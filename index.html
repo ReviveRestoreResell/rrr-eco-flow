@@ -2536,6 +2536,39 @@ html>body{padding:0}</style>
       return;
     }
 
+    if (current.id === 'forms') {
+      setChrome('Forms', 'ECO-FLOW › Listing › Forms');
+      pageLead('Forms', 'Turn verified Item Truth into complete, checked marketplace forms.');
+      sectionLabel('Current workflow');
+
+      const map = document.createElement('dl');
+      map.className = 'capture-map';
+      [
+        ['Input', 'Verified Item Truth and the current marketplace forms.'],
+        ['Contract', 'Set the exact value or action for every field.'],
+        ['Build', 'Enter only the checked Field Value Contract.'],
+        ['Complete', 'Save each form, reopen it, and verify every value.'],
+        ['Feeds', 'Verified forms move into Listing Review.']
+      ].forEach(([label, value]) => {
+        const item = document.createElement('div');
+        item.className = 'capture-item';
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = value;
+        item.append(term, description);
+        map.append(item);
+      });
+      content.append(map);
+
+      const rule = document.createElement('p');
+      rule.className = 'capture-rule';
+      rule.textContent = 'Contract first. Enter exactly. Save, reopen, verify.';
+      content.append(rule);
+      frameworkSection('forms');
+      return;
+    }
+
     setChrome(step.name, `ECO-FLOW › Listing › ${step.name}`);
     pageLead(step.name, step.meaning);
     sectionLabel('Step development');
