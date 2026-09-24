@@ -2129,36 +2129,36 @@ html>body{padding:0}</style>
       evidence: 'Completed forms and visible flags.'
     },
     copy: {
-      systems: 'Buyer Discovery, its approved copy record, Vendoo, and the VAULT.',
-      procedure: 'Produce approved buyer-facing copy, install it only when authorized, then save, reopen, and verify.',
-      roles: 'Buyer Discovery produces copy; Vaughn or Tracie approve; Listing Builder may install it within assigned scope.',
-      responsibilities: 'Buyer Discovery owns buyer language—not Item Truth. Installation must preserve the exact approved copy.',
-      evidence: 'Approved copy plus the applicable save/reopen verification.'
+      systems: 'Buyer Discovery, Listing Builder, eBay, Poshmark, FBMP, Mercari, Depop, Vendoo, and the VAULT.',
+      procedure: 'Create platform-ready buyer copy from verified Item Truth, obtain owner approval, and install only the approved wording.',
+      roles: 'Buyer Discovery creates; Vaughn or Tracie approve; Listing Builder installs when authorized.',
+      responsibilities: 'Create buyer language without changing Item Truth or approved wording.',
+      evidence: 'Owner-approved MAIN, Mercari, and Depop copy.'
     },
     price: {
-      systems: 'Pricing workflow, Pricing_Ruled, Vendoo, and the VAULT.',
-      procedure: 'Research and recommend → owner ruling → authorized installation → save/reopen verification.',
-      roles: 'Pricing producer; Vaughn or Tracie rule the price; Listing Builder may install the ruled price within assigned scope.',
-      responsibilities: 'Pricing owns research and rulings. Pricing_Ruled remains read-only outside an authorized pricing task.',
-      evidence: 'Current owner-ruled price and persistence verification.'
+      systems: 'Pricing skill, marketplace evidence, Pricing_Ruled, Listing Builder, Vendoo, and the VAULT.',
+      procedure: 'Research the market, recommend the opening price and anticipated sale, obtain the owner ruling, and install only when authorized.',
+      roles: 'Pricing researches and recommends; Vaughn or Tracie rule; Listing Builder installs when authorized.',
+      responsibilities: 'Keep recommendations separate from owner-ruled prices and preserve Pricing_Ruled.',
+      evidence: 'Current owner-ruled price and pricing record.'
     },
     photo: {
-      systems: 'Photo Clinic, the shared VAULT item record, and Vendoo when installation is authorized.',
-      procedure: 'Receive a passing Photo Clinic handoff, install the approved set only when assigned, and verify persistence.',
-      roles: 'Photo Clinic produces and approves; Listing Builder is a consumer; Vaughn or Tracie rule owner exceptions.',
-      responsibilities: 'Photo Clinic owns production and approval. Listing Builder preserves current media unless authorized to install the approved pack.',
-      evidence: 'Passing Photo Pack handoff plus installation verification when applicable.'
+      systems: 'Photo Clinic, Listing Builder, Vendoo, and the VAULT.',
+      procedure: 'Build the exact-SKU Photo Pack, complete fidelity review, obtain owner approval, and install only when authorized.',
+      roles: 'Photo Clinic produces; the independent reviewer checks fidelity; Vaughn or Tracie approve; Listing Builder installs when authorized.',
+      responsibilities: 'Keep exact-SKU evidence literal and never treat a draft or reference image as approved.',
+      evidence: 'Approved Photo Pack and Photo Clinic handoff.'
     },
     review: {
-      systems: 'Vendoo, FLOW, and the VAULT.',
-      procedure: 'Present the actual saved-and-reopened result, decisions, and visible flags for owner review.',
-      roles: 'Vaughn or Tracie review; Listing Builder presents the verified result.',
-      responsibilities: 'Review the actual saved state and record decisions without treating completion as publication authority.',
-      evidence: 'Recorded reviewed result, decisions, and flags.'
+      systems: 'Simplified Item Review, Listing Builder, Vendoo, FLOW, and the VAULT.',
+      procedure: 'Present the completed listing with only decisions, changes, and visible flags that need attention.',
+      roles: 'Listing Builder presents; Vaughn or Tracie review and decide.',
+      responsibilities: 'Record approval, revisions, or work orders without treating review as publication authority.',
+      evidence: 'Recorded owner decisions and remaining flags.'
     },
     list: {
-      systems: 'Vendoo, destination marketplaces, FLOW, and the operations ledger/VAULT.',
-      procedure: 'Confirm current owner authority → perform the exact publication action → verify the marketplace result → record it.',
+      systems: 'Listing Builder, Vendoo, eBay, Poshmark, Depop, Mercari, FBMP, FLOW, and the VAULT.',
+      procedure: 'Confirm current owner authority, publish to the named marketplaces, verify the result, and record it.',
       roles: 'Vaughn or Tracie authorize; the assigned workflow executes; Operations records and reconciles.',
       responsibilities: 'Never infer publication authority from completed forms, labels, or review status.',
       evidence: 'Current publication authority and verified marketplace result.'
@@ -2562,6 +2562,82 @@ html>body{padding:0}</style>
       content.append(map);
 
       frameworkSection('forms');
+      return;
+    }
+
+    const compactWorkflows = {
+      copy: {
+        lead: 'Create approved buyer-facing copy for eBay, Poshmark, FBMP, Mercari, Depop, and Vendoo.',
+        rows: [
+          ['Input', 'Verified Item Truth for the exact SKU.'],
+          ['Create', 'Buyer Discovery builds MAIN, Mercari, and Depop copy.'],
+          ['Approve', 'Vaughn or Tracie approves the exact wording.'],
+          ['Complete', 'Approved copy is installed only where authorized.'],
+          ['Feeds', 'Listing Review.']
+        ]
+      },
+      price: {
+        lead: 'Set the right opening price from verified item facts and current market evidence.',
+        rows: [
+          ['Input', 'Verified Item Truth, prior rulings, and current RRR, eBay, and Poshmark evidence.'],
+          ['Research', 'Recommend the opening price and anticipated sale.'],
+          ['Rule', 'Vaughn or Tracie sets the final price.'],
+          ['Complete', 'The ruled price is installed only where authorized.'],
+          ['Feeds', 'Listing Review.']
+        ]
+      },
+      photo: {
+        lead: 'Build an accurate, approved Photo Pack for the exact SKU.',
+        rows: [
+          ['Input', 'Exact-SKU photos, physical evidence, and verified Item Truth.'],
+          ['Create', 'Photo Clinic prepares the buyer photo set.'],
+          ['Review', 'Fidelity is checked and Vaughn or Tracie approves the set.'],
+          ['Complete', 'The approved Photo Pack is ready for authorized installation.'],
+          ['Feeds', 'Listing Review.']
+        ]
+      },
+      review: {
+        lead: 'Give Vaughn or Tracie one quiet review showing only decisions and action needed.',
+        rows: [
+          ['Input', 'Forms, Copy, Price, Photo, and visible flags for the exact SKU.'],
+          ['Review', 'Show the completed listing and only the exceptions needing attention.'],
+          ['Decide', 'Approve, revise, or create an exact work order.'],
+          ['Complete', 'Owner decisions and remaining flags are recorded.'],
+          ['Feeds', 'List, after explicit publication authorization.']
+        ]
+      },
+      list: {
+        lead: 'Publish the reviewed listing only with current owner authority.',
+        rows: [
+          ['Input', 'The reviewed SKU, named marketplaces, and explicit publication authority.'],
+          ['Publish', 'Carry out only the authorized listing action.'],
+          ['Verify', 'Confirm the listing is live on every required marketplace.'],
+          ['Complete', 'The publication result is recorded.'],
+          ['Feeds', 'Published.']
+        ]
+      }
+    };
+
+    const compact = compactWorkflows[current.id];
+    if (compact) {
+      setChrome(step.name, `ECO-FLOW › Listing › ${step.name}`);
+      pageLead(step.name, compact.lead);
+      sectionLabel('Current workflow');
+
+      const map = document.createElement('dl');
+      map.className = 'capture-map';
+      compact.rows.forEach(([label, value]) => {
+        const item = document.createElement('div');
+        item.className = 'capture-item';
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = value;
+        item.append(term, description);
+        map.append(item);
+      });
+      content.append(map);
+      frameworkSection(current.id);
       return;
     }
 
