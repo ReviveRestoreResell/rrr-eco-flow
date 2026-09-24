@@ -1513,7 +1513,11 @@ html>body{padding:0}</style>
     margin-top: 22px;
   }
   #eco-flow-explorer .path-note {
-    margin: 8px 0 0;
+    max-width: 38ch;
+    margin: 8px auto 0;
+    padding: 4px 6px calc(18px + env(safe-area-inset-bottom));
+    line-height: 1.45;
+    overflow: visible;
   }
   #eco-flow-explorer .stage-summary {
     max-width: 72ch;
@@ -1694,10 +1698,19 @@ html>body{padding:0}</style>
     color: var(--foreground);
   }
   #eco-flow-explorer .eco-center strong {
+    display: grid;
+    justify-items: center;
+    gap: 1px;
     font-weight: 500;
     letter-spacing: 0.08em;
+    line-height: 1.2;
   }
-  #eco-flow-explorer .eco-center span {
+  #eco-flow-explorer .eco-brand-row {
+    display: block;
+    margin: 0;
+    color: var(--foreground);
+  }
+  #eco-flow-explorer .eco-center > span {
     display: block;
     margin-top: 6px;
     color: var(--muted-foreground);
@@ -1715,7 +1728,7 @@ html>body{padding:0}</style>
   }
   #eco-flow-explorer .eco-stage-halo {
     position: absolute;
-    inset: 7px 10px;
+    inset: 5px -2px;
     z-index: -1;
     border-radius: 54% 42% 50% 45% / 58% 52% 45% 48%;
     background: color-mix(in srgb, var(--orange) 18%, var(--background));
@@ -1806,33 +1819,43 @@ html>body{padding:0}</style>
       padding: 14px;
     }
     #eco-flow-explorer .eco-cover {
-      width: 100%;
+      width: min(100%, 350px);
+      margin-top: 10px;
     }
     #eco-flow-explorer .eco-canopy {
       left: 9%;
       width: 82%;
     }
     #eco-flow-explorer .eco-center {
-      left: 33%;
-      top: 21%;
-      width: 34%;
+      left: 31%;
+      top: 20%;
+      width: 38%;
     }
     #eco-flow-explorer .eco-center strong {
       max-width: 132px;
       font-size: 0.82rem;
-      line-height: 1.35;
+      line-height: 1.2;
     }
     #eco-flow-explorer .eco-stage {
-      width: 96px;
+      width: 112px;
       min-height: 64px;
     }
-    #eco-flow-explorer .eco-stage-1 { left: 24%; top: 55%; }
-    #eco-flow-explorer .eco-stage-2 { left: 16%; top: 35%; }
-    #eco-flow-explorer .eco-stage-3 { left: 25%; top: 14%; }
+    #eco-flow-explorer .eco-stage .btn {
+      max-width: 100%;
+      padding-left: 5px;
+      padding-right: 5px;
+      white-space: nowrap;
+    }
+    #eco-flow-explorer .eco-stage-halo {
+      inset: 5px 0;
+    }
+    #eco-flow-explorer .eco-stage-1 { left: 25%; top: 55%; }
+    #eco-flow-explorer .eco-stage-2 { left: 17%; top: 35%; }
+    #eco-flow-explorer .eco-stage-3 { left: 26%; top: 14%; }
     #eco-flow-explorer .eco-stage-4 { left: 50%; top: 7%; }
-    #eco-flow-explorer .eco-stage-5 { left: 75%; top: 14%; }
-    #eco-flow-explorer .eco-stage-6 { left: 84%; top: 35%; }
-    #eco-flow-explorer .eco-stage-7 { left: 76%; top: 55%; }
+    #eco-flow-explorer .eco-stage-5 { left: 74%; top: 14%; }
+    #eco-flow-explorer .eco-stage-6 { left: 83%; top: 35%; }
+    #eco-flow-explorer .eco-stage-7 { left: 75%; top: 55%; }
     #eco-flow-explorer .question-row {
       grid-template-columns: 34px minmax(0, 1fr);
     }
@@ -2245,7 +2268,12 @@ html>body{padding:0}</style>
     const center = document.createElement('div');
     center.className = 'eco-center';
     const brand = document.createElement('strong');
-    brand.textContent = 'REVIVE · RESTORE · RESELL';
+    ['REVIVE', 'RESTORE', 'RESELL'].forEach(word => {
+      const row = document.createElement('span');
+      row.className = 'eco-brand-row';
+      row.textContent = word;
+      brand.append(row);
+    });
     const flow = document.createElement('span');
     flow.textContent = 'ECO-FLOW';
     center.append(brand, flow);
