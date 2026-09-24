@@ -2122,11 +2122,11 @@ html>body{padding:0}</style>
       evidence: 'Versioned Item Truth and open Item-Truth flags.'
     },
     forms: {
-      systems: 'Form Guide, Field Value Contract, Form Builder, Vendoo, and the VAULT.',
-      procedure: 'Capture → Form Guide → Field Value Contract → independent contract check → Form Builder → save, reopen, and compare.',
-      roles: 'Form Guide owns schema knowledge; Field Value Contract owns intended field actions; Form Builder owns entry and persistence proof.',
-      responsibilities: 'Complete each applicable form separately, preserve source facts, and record exact flags without silent substitution.',
-      evidence: 'Saved-and-reopened forms compared with the checked contract.'
+      systems: 'Form Guide, Form Builder, eBay, Poshmark, Depop, Mercari, FBMP, Vendoo, and the VAULT.',
+      procedure: 'Use verified Item Truth to complete each applicable form. Preserve unknowns as visible flags.',
+      roles: 'Form Guide defines the fields; Form Builder completes them.',
+      responsibilities: 'Complete each applicable form without guessing or changing the source facts.',
+      evidence: 'Completed forms and visible flags.'
     },
     copy: {
       systems: 'Buyer Discovery, its approved copy record, Vendoo, and the VAULT.',
@@ -2538,17 +2538,17 @@ html>body{padding:0}</style>
 
     if (current.id === 'forms') {
       setChrome('Forms', 'ECO-FLOW › Listing › Forms');
-      pageLead('Forms', 'Turn verified Item Truth into complete, checked forms for Vendoo, eBay, Poshmark, Depop, Mercari, and Facebook.');
+      pageLead('Forms', 'Use verified Item Truth to complete forms for eBay, Poshmark, Depop, Mercari, FBMP, and Vendoo.');
       sectionLabel('Current workflow');
 
       const map = document.createElement('dl');
       map.className = 'capture-map';
       [
-        ['Input', 'Verified Item Truth and the applicable Vendoo, eBay, Poshmark, Depop, Mercari, and Facebook forms.'],
-        ['Contract', 'Set the exact value or action for every field.'],
-        ['Build', 'Enter only the checked Field Value Contract.'],
-        ['Complete', 'Save each form, reopen it, and verify every value.'],
-        ['Feeds', 'Verified forms move into Listing Review.']
+        ['Input', 'Verified Item Truth for the exact SKU.'],
+        ['Contract', 'Set the exact value or action for each applicable field.'],
+        ['Build', 'Complete eBay, Poshmark, Depop, Mercari, FBMP, then Vendoo.'],
+        ['Complete', 'Required fields are complete; unresolved facts remain visible.'],
+        ['Feeds', 'Listing Review.']
       ].forEach(([label, value]) => {
         const item = document.createElement('div');
         item.className = 'capture-item';
@@ -2561,10 +2561,6 @@ html>body{padding:0}</style>
       });
       content.append(map);
 
-      const rule = document.createElement('p');
-      rule.className = 'capture-rule';
-      rule.textContent = 'Contract first. Enter exactly. Save, reopen, verify.';
-      content.append(rule);
       frameworkSection('forms');
       return;
     }
