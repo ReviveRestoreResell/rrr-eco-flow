@@ -2110,7 +2110,7 @@ html>body{padding:0}</style>
     placeholder: {
       systems: 'Vendoo, FLOW, and the VAULT.',
       procedure: 'Create and verify the usable shell: shell image or images, exact SKU, Vendoo category, labels, and Internal Notes.',
-      roles: 'FLOW coordinates the stage; the exact executing role remains to define.',
+      roles: 'Listing Builder creates and verifies the shell; FLOW records its movement.',
       responsibilities: 'Establish the minimum usable shell and carry missing or disputed detail forward as a visible flag.',
       evidence: 'Verified shell contents and any FLOW-FLAG-* records.'
     },
@@ -2566,6 +2566,15 @@ html>body{padding:0}</style>
     }
 
     const compactWorkflows = {
+      placeholder: {
+        lead: 'Create the usable Vendoo shell that starts Listing.',
+        rows: [
+          ['Input', 'Exact SKU, source image or images, Vendoo category, labels, and Internal Notes.'],
+          ['Build', 'Create the item shell in Vendoo.'],
+          ['Complete', 'The required shell elements are present and any issues remain visible.'],
+          ['Feeds', 'Capture, then Forms, Copy, Price, and Photo Clinic.']
+        ]
+      },
       copy: {
         lead: 'Create approved buyer-facing copy for eBay, Poshmark, FBMP, Mercari, Depop, and Vendoo.',
         rows: [
