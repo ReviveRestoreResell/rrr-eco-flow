@@ -1527,6 +1527,35 @@ html>body{padding:0}</style>
   #eco-flow-explorer .stage-summary {
     max-width: 72ch;
   }
+  #eco-flow-explorer .capture-map {
+    margin: 4px 0 0;
+    border-top: 1px solid var(--border);
+  }
+  #eco-flow-explorer .capture-item {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  #eco-flow-explorer .capture-item dt {
+    color: var(--muted-foreground);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  #eco-flow-explorer .capture-item dd {
+    margin: 0;
+    line-height: 1.45;
+  }
+  #eco-flow-explorer .capture-rule {
+    margin: 16px 0 0;
+    padding: 13px 16px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--green) 7%, transparent);
+    text-align: center;
+    font-weight: 500;
+  }
   #eco-flow-explorer .workflow-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1823,6 +1852,11 @@ html>body{padding:0}</style>
     }
     #eco-flow-explorer .workflow {
       padding: 14px;
+    }
+    #eco-flow-explorer .capture-item {
+      grid-template-columns: 82px minmax(0, 1fr);
+      gap: 10px;
+      padding: 12px 0;
     }
     #eco-flow-explorer .eco-cover {
       width: min(100%, 350px);
@@ -2470,6 +2504,38 @@ html>body{padding:0}</style>
   }
 
   function renderListingStep(step) {
+    if (current.id === 'capture') {
+      setChrome('Capture', 'ECO-FLOW › Listing › Capture');
+      pageLead('Capture', 'Establish source-qualified Item Truth that can feed Forms, Copy, Price, and Photo work.');
+      sectionLabel('Current workflow');
+
+      const map = document.createElement('dl');
+      map.className = 'capture-map';
+      [
+        ['Input', 'Exact SKU, item type, and the available manufacturer, label, bench, and photo evidence.'],
+        ['Capture', 'Identity, variant, labels, construction, condition, measurements, source, authority, and scope.'],
+        ['Complete', 'Known facts are verified; unresolved applicable facts are visible flags; the record is saved and reopened.'],
+        ['Feeds', 'Forms, Copy, and Price reuse saved Item Truth. Photo remains an independent producer.']
+      ].forEach(([label, value]) => {
+        const item = document.createElement('div');
+        item.className = 'capture-item';
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = value;
+        item.append(term, description);
+        map.append(item);
+      });
+      content.append(map);
+
+      const rule = document.createElement('p');
+      rule.className = 'capture-rule';
+      rule.textContent = 'No guessing. No gates. Capture once; consume downstream.';
+      content.append(rule);
+      frameworkSection('capture');
+      return;
+    }
+
     setChrome(step.name, `ECO-FLOW › Listing › ${step.name}`);
     pageLead(step.name, step.meaning);
     sectionLabel('Step development');
