@@ -1950,6 +1950,59 @@ html>body{padding:0}</style>
     { id: 'fulfillment', name: 'Fulfillment', short: 'Sold · Pick · Inspect · Pack · Ship' }
   ];
 
+  const stageWorkflows = {
+    sourcing: {
+      lead: 'Find and purchase inventory that fits RRR’s selling goals.',
+      rows: [
+        ['Plan', 'Set the categories, condition, budget, and buying priorities.'],
+        ['Locate', 'Find potential inventory from approved sources.'],
+        ['Evaluate', 'Check sellability, condition, demand, margin, and storage needs.'],
+        ['Purchase', 'Buy the approved items and record source and cost.'],
+        ['Feeds', 'Intake.']
+      ]
+    },
+    intake: {
+      lead: 'Receive each purchase, establish its identity, and prepare it for production.',
+      rows: [
+        ['Input', 'Purchased items, source details, and receipts.'],
+        ['Identify', 'Assign the exact SKU and create the intake record.'],
+        ['Prepare', 'Clean, steam, repair, and note any unresolved condition issue.'],
+        ['Complete', 'The item is identified, prepared, and staged.'],
+        ['Feeds', 'Photography.']
+      ]
+    },
+    photography: {
+      lead: 'Create the minimum exact-SKU photo evidence needed downstream.',
+      rows: [
+        ['Input', 'The prepared item and its exact SKU.'],
+        ['Capture', 'Photograph the front, back, labels, condition, construction, and useful details.'],
+        ['Check', 'Confirm the photos are clear, complete, and matched to the correct SKU.'],
+        ['Complete', 'The minimum physical source-photo set is ready.'],
+        ['Feeds', 'Bench.']
+      ]
+    },
+    bench: {
+      lead: 'Turn the physical item into usable measurements and factual evidence.',
+      rows: [
+        ['Input', 'The exact item, SKU, and source photos.'],
+        ['Measure', 'Record the category-appropriate measurements.'],
+        ['Identify', 'Record brand, tags, model or style, condition, and construction.'],
+        ['Complete', 'Bench evidence is ready for Capture.'],
+        ['Feeds', 'Listing → Placeholder.']
+      ]
+    },
+    fulfillment: {
+      lead: 'Move each sold item through accurate picking, shipping, and inventory closeout.',
+      rows: [
+        ['Sold', 'Confirm the order, exact SKU, quantity, and shipping deadline.'],
+        ['Pick', 'Locate the exact item using its SKU and inventory location.'],
+        ['Inspect', 'Match the item, condition, and order before packing.'],
+        ['Ship', 'Pack securely, apply the correct label, and confirm tracking.'],
+        ['Complete', 'Close the sold inventory and record the shipment result.']
+      ]
+    }
+  };
+
   const listingSteps = {
     placeholder: {
       name: 'Placeholder',
@@ -2079,26 +2132,47 @@ html>body{padding:0}</style>
       responsibilities: 'To define.',
       evidence: 'To define.'
     },
+    'stage-sourcing': {
+      systems: 'Sourcing plan, purchase records, intake roster, and the VAULT.',
+      procedure: 'Plan → locate → evaluate → purchase → record → hand off to Intake.',
+      roles: 'Vaughn or Tracie set buying priorities; the assigned sourcing role evaluates and purchases.',
+      responsibilities: 'Buy within the current priorities and record the source, cost, and item identity without overstating value.',
+      evidence: 'Purchase record, source, cost, item count, and Intake handoff.'
+    },
+    'stage-intake': {
+      systems: 'SKU system, intake record, preparation station, and the VAULT.',
+      procedure: 'Receive → count → assign SKU → assess condition → clean, steam, or repair → stage.',
+      roles: 'The Intake operator owns receiving, SKU assignment, preparation, and staging.',
+      responsibilities: 'Keep every physical item tied to one exact SKU and record unresolved condition issues visibly.',
+      evidence: 'Intake record, assigned SKU, preparation status, and staged item.'
+    },
     'stage-photography': {
-      systems: 'Photo Clinic and the shared VAULT item record.',
-      procedure: 'Build, review, approve, and hand off the exact-SKU Photo Pack under the current Photo Clinic workflow.',
-      roles: 'Photo Clinic producer; designated Photo Reviewer; Vaughn or Tracie for owner exceptions.',
-      responsibilities: 'Photo Clinic owns image production and approval. Listing Builder consumes a passing handoff only when image installation is assigned.',
-      evidence: 'Approved Photo Pack, approval record, and VAULT handoff.'
+      systems: 'Camera, photo station, SKU marker, and the shared VAULT item record.',
+      procedure: 'Capture the minimum exact-SKU physical views, check clarity and identity, then hand off to Bench.',
+      roles: 'The Photography operator captures the physical evidence; Photo Clinic later prepares the buyer-facing Photo Pack.',
+      responsibilities: 'Keep source images literal, useful, and attached to the correct SKU.',
+      evidence: 'Exact-SKU source photos covering the item, labels, condition, construction, and details.'
     },
     'stage-bench': {
       systems: 'Capture and the shared VAULT item record.',
       procedure: 'Record source-qualified measurements, tags, condition, and item facts; preserve unknowns or conflicts as visible flags.',
-      roles: 'Bench operator and Capture producer; detailed assignment remains to define.',
+      roles: 'The Bench operator collects physical evidence; Capture verifies and records Item Truth.',
       responsibilities: 'Supply literal physical evidence. Capture owns factual Item Truth—not buyer language, pricing, or platform classification.',
       evidence: 'Saved Item Truth and exact open flags.'
     },
+    'stage-fulfillment': {
+      systems: 'Marketplace orders, Vendoo, SKU/location records, shipping tools, and the operations ledger/VAULT.',
+      procedure: 'Confirm sale → locate SKU → inspect → pack → ship → confirm tracking → close inventory.',
+      roles: 'The Fulfillment operator picks, inspects, packs, and ships; Operations reconciles sold inventory and results.',
+      responsibilities: 'Ship the exact sold item on time and keep marketplace, tracking, and inventory status aligned.',
+      evidence: 'Order record, pick confirmation, shipment tracking, and inventory closeout.'
+    },
     listing: {
       systems: 'FLOW, Listing Builder, Vendoo, independent producers, and the VAULT.',
-      procedure: 'FLOW-PLACEHOLDER → parallel FORM / COPY / PRICE work → FLOW-REVIEW → explicitly authorized FLOW-LIST. Photo Clinic supplies an independent handoff.',
+      procedure: 'Placeholder → Capture → Forms, Copy, Price, and Photo → Review → explicitly authorized List.',
       roles: 'Listing Builder manager; Capture, Pricing, Form Guide, Field Value Contract, Form Builder, Buyer Discovery, and Photo Clinic producers; Vaughn or Tracie review and authorize.',
       responsibilities: 'FLOW coordinates movement. Each producer owns its specialty. Listing Builder assembles and verifies the listing without silently taking over producer rules.',
-      evidence: 'Versioned producer outputs, save/reopen proof, review decisions, flags, publication authority, and verified marketplace result.'
+      evidence: 'Completed producer outputs, review decisions, visible flags, publication authority, and verified marketplace results.'
     },
     published: {
       systems: 'Live marketplaces, Marketplace Growth Engine, Operations Control Center, and the VAULT/operations ledger.',
@@ -2372,9 +2446,25 @@ html>body{padding:0}</style>
 
   function renderGenericStage(stage) {
     setChrome(stage.name, `ECO-FLOW › ${stage.name}`);
-    pageLead(stage.name, stage.short);
-    sectionLabel('Stage development');
-    developPanel(stage.name, `Help us build the open-question outline for the ${stage.name} stage of the RRR ECO-FLOW. Start from scratch, avoid assumptions, and include the required operating-framework question.`);
+    const workflow = stageWorkflows[stage.id];
+    pageLead(stage.name, workflow?.lead || stage.short);
+    sectionLabel('Current workflow');
+
+    if (workflow) {
+      const map = document.createElement('dl');
+      map.className = 'capture-map';
+      workflow.rows.forEach(([label, value]) => {
+        const item = document.createElement('div');
+        item.className = 'capture-item';
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = value;
+        item.append(term, description);
+        map.append(item);
+      });
+      content.append(map);
+    }
     frameworkSection(`stage-${stage.id}`);
   }
 
