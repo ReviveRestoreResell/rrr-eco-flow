@@ -2,7 +2,7 @@
 <html lang="en" data-visualize-standalone>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -1341,6 +1341,7 @@ html>body{padding:0}</style>
     <div class="viz-row">
       <button id="eco-back" class="btn btn-ghost" type="button" hidden>← Back</button>
       <button id="eco-home" class="btn" type="button" hidden>Ecosystem</button>
+      <button id="eco-refresh" class="btn" type="button" aria-label="Refresh to the latest version">↻ <span class="refresh-label">Refresh</span></button>
     </div>
   </div>
 
@@ -1349,11 +1350,35 @@ html>body{padding:0}</style>
 </div>
 
 <style>
+  html,
+  body {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+  body {
+    touch-action: pan-y;
+  }
+  #widget {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: clip;
+  }
   #eco-flow-explorer {
     width: 100%;
     max-width: 920px;
     margin: 0 auto;
     color: var(--foreground);
+    overflow-x: clip;
+  }
+  #widget > #eco-flow-explorer {
+    width: 100% !important;
+    max-width: 920px !important;
+    padding-left: max(16px, env(safe-area-inset-left)) !important;
+    padding-right: max(16px, env(safe-area-inset-right)) !important;
   }
   #eco-flow-explorer [hidden] {
     display: none !important;
@@ -1697,7 +1722,20 @@ html>body{padding:0}</style>
       grid-template-columns: 1fr;
     }
   }
-  @media (max-width: 420px) {
+  @media (max-width: 560px) {
+    #eco-flow-explorer > .viz-row:first-child {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: flex-start !important;
+    }
+    #eco-flow-explorer > .viz-row:first-child > .viz-row {
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      gap: 4px;
+    }
+    #eco-flow-explorer .refresh-label {
+      display: none;
+    }
     #eco-flow-explorer .page-lead {
       grid-template-columns: 54px minmax(0, 1fr);
       gap: 12px;
@@ -1735,16 +1773,16 @@ html>body{padding:0}</style>
       line-height: 1.35;
     }
     #eco-flow-explorer .eco-stage {
-      width: 108px;
+      width: 96px;
       min-height: 64px;
     }
-    #eco-flow-explorer .eco-stage-1 { left: 23%; top: 55%; }
-    #eco-flow-explorer .eco-stage-2 { left: 11%; top: 35%; }
+    #eco-flow-explorer .eco-stage-1 { left: 24%; top: 55%; }
+    #eco-flow-explorer .eco-stage-2 { left: 16%; top: 35%; }
     #eco-flow-explorer .eco-stage-3 { left: 25%; top: 14%; }
     #eco-flow-explorer .eco-stage-4 { left: 50%; top: 7%; }
     #eco-flow-explorer .eco-stage-5 { left: 75%; top: 14%; }
-    #eco-flow-explorer .eco-stage-6 { left: 89%; top: 35%; }
-    #eco-flow-explorer .eco-stage-7 { left: 77%; top: 55%; }
+    #eco-flow-explorer .eco-stage-6 { left: 84%; top: 35%; }
+    #eco-flow-explorer .eco-stage-7 { left: 76%; top: 55%; }
     #eco-flow-explorer .question-row {
       grid-template-columns: 34px minmax(0, 1fr);
     }
@@ -1763,6 +1801,31 @@ html>body{padding:0}</style>
   const breadcrumb = root.querySelector('#eco-breadcrumb');
   const backButton = root.querySelector('#eco-back');
   const homeButton = root.querySelector('#eco-home');
+  const refreshButton = root.querySelector('#eco-refresh');
+
+  function refreshToLatest() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('_refresh', Date.now().toString());
+    window.location.replace(url.toString());
+  }
+
+  refreshButton.addEventListener('click', refreshToLatest);
+
+  let pullStartY = null;
+  let pullStartX = null;
+  window.addEventListener('touchstart', event => {
+    if (window.scrollY > 0 || event.touches.length !== 1) return;
+    pullStartY = event.touches[0].clientY;
+    pullStartX = event.touches[0].clientX;
+  }, { passive: true });
+  window.addEventListener('touchend', event => {
+    if (pullStartY === null || !event.changedTouches.length) return;
+    const deltaY = event.changedTouches[0].clientY - pullStartY;
+    const deltaX = Math.abs(event.changedTouches[0].clientX - pullStartX);
+    pullStartY = null;
+    pullStartX = null;
+    if (deltaY >= 70 && deltaY > deltaX * 1.5 && window.scrollY <= 0) refreshToLatest();
+  }, { passive: true });
 
   const stages = [
     { id: 'sourcing', name: 'Sourcing', short: 'Locate · Evaluate · Purchase' },
