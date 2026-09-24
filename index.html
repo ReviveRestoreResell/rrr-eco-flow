@@ -1377,14 +1377,17 @@ html>body{padding:0}</style>
   #widget > #eco-flow-explorer {
     width: 100% !important;
     max-width: 920px !important;
-    padding-left: max(16px, env(safe-area-inset-left)) !important;
-    padding-right: max(16px, env(safe-area-inset-right)) !important;
+    padding: 0 !important;
   }
   #eco-flow-explorer [hidden] {
     display: none !important;
   }
   #eco-flow-explorer > .viz-row:first-child {
     gap: 18px;
+    padding: 6px max(14px, env(safe-area-inset-right)) 0 max(14px, env(safe-area-inset-left));
+  }
+  #eco-flow-explorer #eco-content {
+    padding: 0 max(14px, env(safe-area-inset-right)) 28px max(14px, env(safe-area-inset-left));
   }
   #eco-flow-explorer h1 {
     margin-bottom: 4px;
@@ -1398,7 +1401,10 @@ html>body{padding:0}</style>
     grid-template-columns: 74px minmax(0, 1fr);
     align-items: center;
     gap: 18px;
-    margin: 4px 0 28px;
+    margin: 4px 0 22px;
+    padding: 12px;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--green) 5%, transparent);
   }
   #eco-flow-explorer .page-mark {
     width: 74px;
@@ -1433,6 +1439,27 @@ html>body{padding:0}</style>
     flex-wrap: wrap;
     margin: 14px 0;
   }
+  #eco-flow-explorer .listing-journey {
+    margin: 10px 0 24px;
+    padding: 18px;
+    border: 1px solid color-mix(in srgb, var(--green) 18%, var(--border));
+    border-radius: 24px;
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--green) 7%, transparent), color-mix(in srgb, var(--orange) 5%, transparent));
+  }
+  #eco-flow-explorer .listing-journey .flow-track {
+    margin: 0;
+  }
+  #eco-flow-explorer .listing-branch-label {
+    margin: 16px 0 10px;
+    color: var(--muted-foreground);
+    text-align: center;
+  }
+  #eco-flow-explorer .path-connector {
+    margin: 8px 0;
+    color: var(--muted-foreground);
+    text-align: center;
+  }
   #eco-flow-explorer .flow-arrow {
     color: var(--muted-foreground);
     font-weight: 400;
@@ -1441,13 +1468,15 @@ html>body{padding:0}</style>
     display: grid;
     grid-template-columns: repeat(4, minmax(120px, 1fr));
     gap: 12px;
-    margin: 16px 0;
-    padding: 18px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    margin: 0;
+    padding: 0;
+    border: 0;
   }
   #eco-flow-explorer .lane-wrap {
     text-align: center;
+    padding: 12px 8px 10px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--background) 78%, transparent);
   }
   #eco-flow-explorer .lane-caption {
     color: var(--muted-foreground);
@@ -1499,8 +1528,10 @@ html>body{padding:0}</style>
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 16px;
+    border: 1px solid color-mix(in srgb, var(--green) 15%, var(--border));
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--green) 5%, transparent);
   }
   #eco-flow-explorer .workflow strong,
   #eco-flow-explorer .workflow span {
@@ -1739,21 +1770,40 @@ html>body{padding:0}</style>
     #eco-flow-explorer .page-lead {
       grid-template-columns: 54px minmax(0, 1fr);
       gap: 12px;
+      padding: 10px;
     }
     #eco-flow-explorer .page-mark {
       width: 54px;
       font-size: 0.62rem;
     }
     #eco-flow-explorer .lane-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
     }
     #eco-flow-explorer .flow-track {
-      align-items: stretch;
-      flex-direction: column;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 6px;
     }
     #eco-flow-explorer .flow-arrow {
       text-align: center;
-      transform: rotate(90deg);
+      transform: none;
+    }
+    #eco-flow-explorer .listing-journey {
+      padding: 14px 10px;
+      border-radius: 20px;
+    }
+    #eco-flow-explorer .listing-journey .btn {
+      min-width: 0;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    #eco-flow-explorer .lane-wrap {
+      padding: 10px 5px 8px;
+    }
+    #eco-flow-explorer .workflow {
+      padding: 14px;
     }
     #eco-flow-explorer .eco-cover {
       width: 100%;
@@ -2234,19 +2284,20 @@ html>body{padding:0}</style>
     pageLead('Listing', 'Turn verified Item Truth into a complete, reviewable listing ready for authorized publication.');
     sectionLabel('Listing path');
 
+    const journey = document.createElement('div');
+    journey.className = 'listing-journey';
+
     const top = document.createElement('div');
     top.className = 'flow-track';
     top.append(
       button('Placeholder', () => setPage({ type: 'listing-step', id: 'placeholder' }), true),
       arrow(),
-      button('Capture', () => setPage({ type: 'listing-step', id: 'capture' })),
-      arrow()
+      button('Capture', () => setPage({ type: 'listing-step', id: 'capture' }))
     );
     const lanesLabel = document.createElement('span');
-    lanesLabel.className = 'text-small text-muted';
-    lanesLabel.textContent = 'production lanes';
-    top.append(lanesLabel);
-    content.append(top);
+    lanesLabel.className = 'text-small listing-branch-label';
+    lanesLabel.textContent = 'Capture builds four coordinated listing parts';
+    journey.append(top, lanesLabel);
 
     const lanes = document.createElement('div');
     lanes.className = 'lane-grid';
@@ -2259,7 +2310,13 @@ html>body{padding:0}</style>
       wrap.append(button(listingSteps[id].name, () => setPage({ type: 'listing-step', id })), caption);
       lanes.append(wrap);
     });
-    content.append(lanes);
+    journey.append(lanes);
+
+    const connector = document.createElement('div');
+    connector.className = 'path-connector';
+    connector.setAttribute('aria-hidden', 'true');
+    connector.textContent = '↓';
+    journey.append(connector);
 
     const finish = document.createElement('div');
     finish.className = 'flow-track';
@@ -2271,7 +2328,8 @@ html>body{padding:0}</style>
     );
     const published = button('Published', () => setPage({ type: 'stage', id: 'published' }), true);
     finish.append(published);
-    content.append(finish);
+    journey.append(finish);
+    content.append(journey);
 
     sectionLabel('Marketplace workflows');
     const workflows = document.createElement('div');
